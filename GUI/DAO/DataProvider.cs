@@ -39,7 +39,9 @@ namespace GUI.DAO
         public static DataTable ExecuteQuery(string query, object[] parameter = null)
         {
             DataTable data = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionSTR))
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionSTR))
                 {
                 connection.Open();
 
@@ -65,15 +67,20 @@ namespace GUI.DAO
 
                 connection.Close();
                 }
-            
-
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
             return data;
         }
 
         public static int ExecuteNonQuery(string query, object[] parameter = null)
         {
             int data = 0;
-
+            try
+            {
                 using (SqlConnection connection = new SqlConnection(connectionSTR))
                 {
                     connection.Open();
@@ -98,15 +105,19 @@ namespace GUI.DAO
 
                     connection.Close();
                 }
-            
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             return data;
         }
 
         public static object ExecuteScalar(string query, object[] parameter = null)
         {
             object data = 0;
-
+            try
+            {
                 using (SqlConnection connection = new SqlConnection(connectionSTR))
                 {
                     connection.Open();
@@ -131,8 +142,11 @@ namespace GUI.DAO
 
                     connection.Close();
                 }
-            
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             return data;
         }
     }
