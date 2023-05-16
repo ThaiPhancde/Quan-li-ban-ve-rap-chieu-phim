@@ -63,7 +63,7 @@ namespace GUI.DAO
 
                 adapter.Fill(data);
 
-                connection.Close()
+                connection.Close();
                 }
             
 
