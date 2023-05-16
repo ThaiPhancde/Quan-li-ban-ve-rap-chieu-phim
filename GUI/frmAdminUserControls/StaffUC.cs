@@ -68,7 +68,7 @@ namespace GUI.frmAdminUserControls
         }
 
         //Sửa Staff
-        void UpdateStaff(string id, string hoTen, string ngaySinh, string diaChi, string sdt, int cmnd)
+        void UpdateStaff(string id, string hoTen, DateTime ngaySinh, string diaChi, string sdt, int cmnd)
         {
             if (StaffDAO.UpdateStaff(id, hoTen, ngaySinh, diaChi, sdt, cmnd))
             {
@@ -83,7 +83,7 @@ namespace GUI.frmAdminUserControls
         {
             string staffId = txtStaffId.Text;
             string staffName = txtStaffName.Text;
-            string staffBirth = DateTime.Parse(txtStaffBirth.Text).ToString("YYYY-MM-DD");
+            DateTime staffBirth = DateTime.Parse(txtStaffBirth.Text);
             string staffAddress = txtStaffAddress.Text;
             string staffPhone = txtStaffPhone.Text;
             int staffINumber = Int32.Parse(txtStaffINumber.Text);

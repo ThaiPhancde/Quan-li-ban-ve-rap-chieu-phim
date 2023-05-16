@@ -11,9 +11,9 @@ namespace GUI.DAO
 
         private DataProvider() { }
 
-        //private static string connectionSTR = "Data Source=THAITHANG-PC;Initial Catalog=QLRP;Integrated Security=True";
-        //private static string connectionSTR = "Data Source=DESKTOP-G3TR9OQ;Initial Catalog=QLRP;Integrated Security=True";
-        private static string connectionSTR = Properties.Settings.Default.connectionSTR;//= "Data Source=THAITHANG-PC;Initial Catalog=QuanLyRapPhim;User ID=sa;pwd=thaithang1";
+        //private static string connectionSTR = "Data Source=LEVIAS;Initial Catalog=QLRP;Integrated Security=True";
+        
+        private static string connectionSTR = Properties.Settings.Default.connectionSTR;//= "Data Source=LEVIAS;Initial Catalog=QuanLyRapPhim;User ID=sa;pwd=1";
 
         public static bool TestConnectionSQL(string conn)
         {
@@ -39,41 +39,48 @@ namespace GUI.DAO
         public static DataTable ExecuteQuery(string query, object[] parameter = null)
         {
             DataTable data = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionSTR))
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionSTR))
                 {
-                connection.Open();
+                    connection.Open();
 
-                SqlCommand command = new SqlCommand(query, connection);
+                    SqlCommand command = new SqlCommand(query, connection);
 
-                if (parameter != null)
-                {
-                    string[] listPara = query.Split(' ');
-                    int i = 0;
-                    foreach (string item in listPara)
+                    if (parameter != null)
                     {
-                        if (item.Contains('@'))
+                        string[] listPara = query.Split(' ');
+                        int i = 0;
+                        foreach (string item in listPara)
                         {
-                            command.Parameters.AddWithValue(item, parameter[i]);
-                            i++;
+                            if (item.Contains('@'))
+                            {
+                                command.Parameters.AddWithValue(item, parameter[i]);
+                                i++;
+                            }
                         }
                     }
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+
+                    adapter.Fill(data);
+
+                    connection.Close();
                 }
-
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
-
-                adapter.Fill(data);
-
-                connection.Close();
-                }
-            
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
             return data;
         }
 
         public static int ExecuteNonQuery(string query, object[] parameter = null)
         {
             int data = 0;
-
+            try
+            {
                 using (SqlConnection connection = new SqlConnection(connectionSTR))
                 {
                     connection.Open();
@@ -98,15 +105,19 @@ namespace GUI.DAO
 
                     connection.Close();
                 }
-            
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             return data;
         }
 
         public static object ExecuteScalar(string query, object[] parameter = null)
         {
             object data = 0;
-
+            try
+            {
                 using (SqlConnection connection = new SqlConnection(connectionSTR))
                 {
                     connection.Open();
@@ -131,8 +142,11 @@ namespace GUI.DAO
 
                     connection.Close();
                 }
-            
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             return data;
         }
     }
